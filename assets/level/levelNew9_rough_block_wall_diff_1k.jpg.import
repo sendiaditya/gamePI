@@ -1,0 +1,38 @@
+[remap]
+
+importer="texture"
+type="CompressedTexture2D"
+uid="uid://cwtd5k46bu631"
+path.s3tc="res://.godot/imported/levelNew9_rough_block_wall_diff_1k.jpg-8fa55ad32c55b0c2816726dce33c264d.s3tc.ctex"
+metadata={
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
+}
+generator_parameters={
+"md5": "57c7adbec3179430e880a17b0a5edf80"
+}
+
+[deps]
+
+source_file="res://assets/level/levelNew9_rough_block_wall_diff_1k.jpg"
+dest_files=["res://.godot/imported/levelNew9_rough_block_wall_diff_1k.jpg-8fa55ad32c55b0c2816726dce33c264d.s3tc.ctex"]
+
+[params]
+
+compress/mode=2
+compress/high_quality=false
+compress/lossy_quality=0.7
+compress/hdr_compression=1
+compress/normal_map=0
+compress/channel_pack=0
+mipmaps/generate=true
+mipmaps/limit=-1
+roughness/mode=0
+roughness/src_normal=""
+process/fix_alpha_border=true
+process/premult_alpha=false
+process/normal_map_invert_y=false
+process/hdr_as_srgb=false
+process/hdr_clamp_exposure=false
+process/size_limit=0
+detect_3d/compress_to=0
