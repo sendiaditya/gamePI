@@ -1,0 +1,206 @@
+[gd_scene load_steps=15 format=3 uid="uid://bm8xgcixsday1"]
+
+[ext_resource type="Script" path="res://script/player.gd" id="1_34fgr"]
+[ext_resource type="PackedScene" uid="uid://dm0jdlxdv7t5w" path="res://models/pistol/root_scene.tscn" id="2_lsb08"]
+[ext_resource type="PackedScene" uid="uid://dnkx1n11dih5g" path="res://models/rifle/rifle.tscn" id="3_ibutp"]
+[ext_resource type="Texture2D" uid="uid://oru4t2g4tfxq" path="res://models/rifle/keyboard_1.png" id="4_tokkq"]
+[ext_resource type="Texture2D" uid="uid://cshg80cdaskqf" path="res://models/rifle/keyboard_2.png" id="5_nnqwi"]
+[ext_resource type="Texture2D" uid="uid://c8w5phhikh0l0" path="res://models/rifle/M4a4_hud.png" id="6_vobar"]
+[ext_resource type="Texture2D" uid="uid://cwin5v6be7pkk" path="res://models/rifle/pistol_black.png" id="7_6oroh"]
+[ext_resource type="PackedScene" uid="uid://b0q7xn14h57y5" path="res://models/tryPause.tscn" id="8_iyoww"]
+[ext_resource type="PackedScene" uid="uid://ynt7ww227o8n" path="res://models/death.tscn" id="9_cxgk3"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_bq3yf"]
+
+[sub_resource type="Animation" id="Animation_uc275"]
+resource_name = "lowerPistol"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Root Scene:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0.414554, -0.481409, -0.548849), Vector3(0.415, -1, 0.5)]
+}
+tracks/1/type = "position_3d"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Root Scene2")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, -0.371957, -0.481409, -0.548849, 0.3, 1, -0.372, -1, 0.5)
+
+[sub_resource type="Animation" id="Animation_cv0yf"]
+resource_name = "lowerRifle"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("rifle:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0.235, -0.37, -0.379138), Vector3(0.235, -1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ovuxj"]
+_data = {
+"lowerPistol": SubResource("Animation_uc275"),
+"lowerRifle": SubResource("Animation_cv0yf")
+}
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8socn"]
+bg_color = Color(0.224601, 0.696818, 0.497053, 1)
+
+[node name="player" type="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.108107, 8.83985)
+floor_max_angle = 1.0472
+script = ExtResource("1_34fgr")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_bq3yf")
+
+[node name="head" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55072, 0)
+
+[node name="Camera3D" type="Camera3D" parent="head"]
+
+[node name="Root Scene" parent="head/Camera3D" instance=ExtResource("2_lsb08")]
+transform = Transform3D(0.29813, 0, 0.0334407, 0, 0.3, 0, -0.0334407, 0, 0.29813, 0.415, -1, 0.5)
+
+[node name="Root Scene2" parent="head/Camera3D" instance=ExtResource("2_lsb08")]
+transform = Transform3D(0.2996, 0, -0.0154863, 0, 0.3, 0, 0.0154863, 0, 0.2996, -0.372, -1, 0.5)
+
+[node name="rifle" parent="head/Camera3D" instance=ExtResource("3_ibutp")]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0.235, -0.37, -0.379138)
+
+[node name="aimRay" type="RayCast3D" parent="head/Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.5)
+target_position = Vector3(0, -1, -100)
+collision_mask = 2
+collide_with_areas = true
+
+[node name="aimRayEnd" type="Node3D" parent="head/Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -101.5)
+
+[node name="WeaponSwitch" type="AnimationPlayer" parent="head/Camera3D"]
+libraries = {
+"": SubResource("AnimationLibrary_ovuxj")
+}
+
+[node name="Control" type="Control" parent="head/Camera3D"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="hp" type="ProgressBar" parent="head/Camera3D/Control"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 36.0
+offset_top = -45.0
+offset_right = 239.0
+offset_bottom = -28.0
+grow_vertical = 0
+theme_override_styles/fill = SubResource("StyleBoxFlat_8socn")
+value = 60.0
+show_percentage = false
+
+[node name="1" type="TextureRect" parent="head/Camera3D/Control"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -219.0
+offset_top = -159.0
+offset_right = -155.0
+offset_bottom = -95.0
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("4_tokkq")
+
+[node name="2" type="TextureRect" parent="head/Camera3D/Control"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -219.0
+offset_top = -84.0
+offset_right = -155.0
+offset_bottom = -20.0
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("5_nnqwi")
+
+[node name="rifle" type="TextureRect" parent="head/Camera3D/Control"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -161.0
+offset_top = -159.0
+offset_right = 839.0
+offset_bottom = 166.0
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(0.15, 0.15)
+texture = ExtResource("6_vobar")
+expand_mode = 1
+
+[node name="pistol" type="TextureRect" parent="head/Camera3D/Control"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -114.0
+offset_top = -87.0
+offset_right = 1166.0
+offset_bottom = 598.0
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("7_6oroh")
+
+[node name="pistol2" type="TextureRect" parent="head/Camera3D/Control"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -149.0
+offset_top = -87.0
+offset_right = 1131.0
+offset_bottom = 598.0
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("7_6oroh")
+flip_h = true
+
+[node name="pause" parent="." instance=ExtResource("8_iyoww")]
+
+[node name="death" parent="." instance=ExtResource("9_cxgk3")]

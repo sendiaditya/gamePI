@@ -15,8 +15,11 @@ var t_bob = 0.0
 const BASE_FOV = 75.0
 const FOV_CHANGE = 1.5
 
-signal player_hit
+const MAX_HEALTH = 100
+var health = MAX_HEALTH
 
+signal player_hit
+signal player_died
 
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
@@ -47,17 +50,32 @@ var can_shoot = true
 @onready var gun_anim2 = $"head/Camera3D/Root Scene2/RootNode/AnimationPlayer"
 @onready var gun_barrel2 = $"head/Camera3D/Root Scene2/RootNode/RayCast3D"
 
+@onready var health_bar = $head/Camera3D/Control/hp
+
+@onready var pauseMenu =  $pause
+@onready var deathMenu =  $death
+
+var hit_rect
+
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	
+	health_bar.max_value = MAX_HEALTH
+	health_bar.value = health
+	
+	hit_rect = get_tree().root.get_node("/root/World/Control/ColorRect")
 
 func _unhandled_input(event):
 	if event is InputEventMouseMotion:
 		head.rotate_y(-event.relative.x * SENSITIVITY)
 		camera.rotate_x(-event.relative.y * SENSITIVITY)
 		camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-90), deg_to_rad(90))
+	
+	if event.is_action_pressed("esc"):
+		pauseMenu.pause()
 
+func _physics_process(delta): 
 
-func _physics_process(delta):
 	# Add the gravity.
 	if not is_on_floor():
 		velocity.y -= gravity * delta
@@ -116,6 +134,7 @@ func _physics_process(delta):
 	move_and_slide()
 
 
+
 func _headbob(time) -> Vector3:
 	var pos = Vector3.ZERO
 	pos.y = sin(time * BOB_FREQ) * BOB_AMP
@@ -125,6 +144,23 @@ func _headbob(time) -> Vector3:
 func hit(dir):
 	emit_signal("player_hit")
 	velocity += dir * HIT_STAGGER
+	
+	hit_rect.visible = true
+	await get_tree().create_timer(0.2).timeout
+	hit_rect.visible = false
+	
+	decrease_health(10)
+
+func decrease_health(amount):
+	health -= amount
+	health_bar.value = health
+	if health <= 0:
+		health = 0
+		die()
+
+func die():
+	emit_signal("player_died")
+	deathMenu.pause()
 
 func _shoot_pistol():
 	if !gun_anim.is_playing():
@@ -179,3 +215,5 @@ func _raise_weapon(new_weapon):
 			weapon_switching.play_backwards("lowerPistol")
 	weapon = new_weapon
 	can_shoot = true
+
+
