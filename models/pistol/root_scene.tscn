@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://dm0jdlxdv7t5w"]
+[gd_scene load_steps=5 format=3 uid="uid://dm0jdlxdv7t5w"]
 
 [ext_resource type="PackedScene" uid="uid://iayg2ie285vk" path="res://models/pistol/Pistol.glb" id="1_w17mp"]
+[ext_resource type="AudioStream" uid="uid://b53f8elhk0e6v" path="res://assets/sound/080977_bullet-39804.mp3" id="2_e1fvf"]
 
 [sub_resource type="Animation" id="Animation_ojpkl"]
 resource_name = "shoot"
@@ -18,6 +19,20 @@ tracks/0/keys = {
 "update": 0,
 "values": [Vector3(0, 0, 0), Vector3(0, 0.01, 0.05), Vector3(0, 0, 0)]
 }
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AudioStreamPlayer3D")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.01),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [0.0],
+"method": &"play"
+}]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_j2bxu"]
 _data = {
@@ -27,7 +42,7 @@ _data = {
 [node name="Root Scene" instance=ExtResource("1_w17mp")]
 
 [node name="Pistol_5" parent="RootNode" index="0"]
-transform = Transform3D(-4.37114e-06, -88.8819, -4.37114e-06, 0, -3.88515e-06, 100, -100, 3.88515e-06, 1.91069e-13, 0, 0, 0)
+transform = Transform3D(-4.37114e-06, -88.8819, -4.37114e-06, 0, -3.88515e-06, 100, -100, 3.88515e-06, 1.91069e-13, 0, 0.01, 0.05)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="RootNode" index="1"]
 libraries = {
@@ -37,3 +52,8 @@ libraries = {
 [node name="RayCast3D" type="RayCast3D" parent="RootNode" index="2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.555395, -1.42236)
 target_position = Vector3(0, 0, -1)
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="RootNode" index="3"]
+stream = ExtResource("2_e1fvf")
+volume_db = -40.0
+pitch_scale = 0.75

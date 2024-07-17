@@ -2,6 +2,7 @@ extends CharacterBody3D
 
 
 var speed
+
 const WALK_SPEED = 5.0
 const SPRINT_SPEED = 8.0
 const JUMP_VELOCITY = 4.5
@@ -18,6 +19,8 @@ const FOV_CHANGE = 1.5
 const MAX_HEALTH = 100
 var health = MAX_HEALTH
 
+var defeated = 0
+
 signal player_hit
 signal player_died
 
@@ -26,7 +29,7 @@ signal player_died
 #var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 var gravity = 9.8
 
-var bullet = load("res://models/pistol/bullet.tscn")
+var bullet = load("res://models/pistol/bullet.tscn")	
 var bullet_trail = load("res://models/rifle/trail.tscn")
 var instance
 
@@ -34,6 +37,8 @@ enum weapons {
 	AUTO,
 	PISTOLS
 }
+
+
 var weapon = weapons.AUTO
 var can_shoot = true
 @onready var weapon_switching = $head/Camera3D/WeaponSwitch
@@ -54,8 +59,21 @@ var can_shoot = true
 
 @onready var pauseMenu =  $pause
 @onready var deathMenu =  $death
+@onready var winMenu =  $win
+
+@onready var target = $head/Camera3D/Control/much
+@onready var lastboss_quest = $head/Camera3D/Control/last 
+@onready var done = $head/Camera3D/Control/done
+
+@onready var click_sfx = $click
+@onready var walk_sfx = $walk
+@onready var run_sfx = $run
+@onready var update_sfx = $update
+@onready var win_sfx = $win2
 
 var hit_rect
+var is_walking = false
+var is_running = false
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -72,6 +90,8 @@ func _unhandled_input(event):
 		camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-90), deg_to_rad(90))
 	
 	if event.is_action_pressed("esc"):
+		click_sfx.play()
+		await get_tree().create_timer(0.1).timeout
 		pauseMenu.pause()
 
 func _physics_process(delta): 
@@ -86,8 +106,10 @@ func _physics_process(delta):
 		
 	if Input.is_action_pressed("shift"):
 		speed = SPRINT_SPEED
+
 	else:
 		speed = WALK_SPEED
+
 
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
@@ -97,14 +119,33 @@ func _physics_process(delta):
 		if direction:
 			velocity.x = direction.x * speed
 			velocity.z = direction.z * speed
+			if !is_walking and speed == WALK_SPEED:
+				is_walking = true
+				is_running = false
+				walk_sfx.play()
+				run_sfx.stop()
+			elif !is_running and speed == SPRINT_SPEED:
+				is_running = true
+				is_walking = false
+				run_sfx.play()
+				walk_sfx.stop()
 		else:
 			velocity.x = lerp(velocity.x, direction.x * speed, delta * 8.0)
 			velocity.z = lerp(velocity.z, direction.z * speed, delta * 8.0)
-			#velocity.x = move_toward(velocity.x, 0, SPEED)
-			#velocity.z = move_toward(velocity.z, 0, SPEED)
+			if is_walking or is_running:
+				is_walking = false
+				is_running = false
+				walk_sfx.stop()
+				run_sfx.stop()
+			
 	else:
 		velocity.x = lerp(velocity.x, direction.x * speed, delta * 3.0)
 		velocity.z = lerp(velocity.z, direction.z * speed, delta * 3.0)
+		if is_walking or is_running:
+			is_walking = false
+			is_running = false
+			walk_sfx.stop()
+			run_sfx.stop()
 
 		
 	t_bob += delta * velocity.length() * float(is_on_floor())
@@ -113,6 +154,7 @@ func _physics_process(delta):
 	var velocity_clamped = clamp(velocity.length(), 0.5, SPRINT_SPEED * 2)
 	var target_fov = BASE_FOV + FOV_CHANGE * velocity_clamped
 	camera.fov = lerp(camera.fov, target_fov, delta * 8.0)
+	
 	
 	
 	# Shooting
@@ -141,7 +183,7 @@ func _headbob(time) -> Vector3:
 	pos.x = cos(time * BOB_FREQ / 2) * BOB_AMP
 	return pos
 	
-func hit(dir):
+func hit(dir, damage):
 	emit_signal("player_hit")
 	velocity += dir * HIT_STAGGER
 	
@@ -149,7 +191,7 @@ func hit(dir):
 	await get_tree().create_timer(0.2).timeout
 	hit_rect.visible = false
 	
-	decrease_health(10)
+	decrease_health(damage)
 
 func decrease_health(amount):
 	health -= amount
@@ -157,6 +199,23 @@ func decrease_health(amount):
 	if health <= 0:
 		health = 0
 		die()
+		
+func update():
+	defeated += 1
+	target.text  = str(defeated)
+	update_sfx.play()
+	if defeated == 3:
+		lastboss_quest.visible = true
+		update_sfx.play()
+		
+func win():
+	done.visible = true
+	update_sfx.play()
+	await get_tree().create_timer(6).timeout
+	win_sfx.play()
+	await get_tree().create_timer(1).timeout
+	winMenu.pause()
+	
 
 func die():
 	emit_signal("player_died")
@@ -215,5 +274,6 @@ func _raise_weapon(new_weapon):
 			weapon_switching.play_backwards("lowerPistol")
 	weapon = new_weapon
 	can_shoot = true
+
 
 

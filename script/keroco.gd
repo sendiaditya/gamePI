@@ -6,6 +6,7 @@ var health = 6
 
 const SPEED = 4.0
 const ATTACK_RANGE = 2.0
+const DAMAGE = 20
 
 signal keroco_hit
 
@@ -13,6 +14,8 @@ signal keroco_hit
 
 @onready var nav_agent = $NavigationAgent3D
 @onready var anim_tree = $AnimationTree
+
+@onready var attack_sfx = $attack
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -31,10 +34,10 @@ func _process(delta):
 			var next_nav_point = nav_agent.get_next_path_position()
 			velocity = (next_nav_point - global_transform.origin).normalized() * SPEED
 			rotation.y = lerp_angle(rotation.y, atan2(-velocity.x, -velocity.z), delta * 10.0)
-			look_at(Vector3(player.global_position.x, global_position.y, player.global_position.z), Vector3.UP, true)
+			#look_at(Vector3(player.global_position.x, global_position.y, player.global_position.z), Vector3.UP, true)
 		"Attack":
-			look_at(Vector3(player.global_position.x, global_position.y, player.global_position.z), Vector3.UP, true)
-	
+			look_at(Vector3(player.global_position.x, global_position.y, player.global_position.z), Vector3.UP)
+		
 	
 	
 	anim_tree.set("parameters/conditions/attack", _target_in_range())
@@ -51,7 +54,7 @@ func _target_in_range():
 func _hit_finished():
 	if global_position.distance_to(player.global_position) < ATTACK_RANGE + 1.0:
 		var dir = global_position.direction_to(player.global_position)
-		player.hit(dir)
+		player.hit(dir, DAMAGE)
 
 
 func _on_area_3d_body_part_hit(dam):

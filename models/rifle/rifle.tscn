@@ -1,6 +1,7 @@
-[gd_scene load_steps=11 format=3 uid="uid://dnkx1n11dih5g"]
+[gd_scene load_steps=12 format=3 uid="uid://dnkx1n11dih5g"]
 
 [ext_resource type="Texture2D" uid="uid://bndjjghdcxfb6" path="res://models/rifle/m_1.png" id="1_k2ty5"]
+[ext_resource type="AudioStream" uid="uid://b53f8elhk0e6v" path="res://assets/sound/080977_bullet-39804.mp3" id="2_ndgmy"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2dnd1"]
 resource_name = "Main"
@@ -142,6 +143,20 @@ tracks/2/keys = {
 "update": 0,
 "values": [Vector3(0, 0.664078, -3.95273), Vector3(0, 0.664078, -4.0925), Vector3(0, 0.664078, -4.0925), Vector3(0, 0.664078, -4.0925), Vector3(0, 0.664078, -4.0925), Vector3(0, 0.664078, -4.0925), Vector3(0, 0.664078, -4.0925), Vector3(0, 0.664078, -4.0925)]
 }
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("shot")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.01),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [0.0],
+"method": &"play"
+}]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_puxm2"]
 _data = {
@@ -162,7 +177,7 @@ emission_texture = ExtResource("1_k2ty5")
 [node name="rifle" type="Node3D"]
 
 [node name="AssaultRifle" type="MeshInstance3D" parent="."]
-transform = Transform3D(-4.37114e-06, -100, -4.37114e-06, 0, -4.37114e-06, 100, -100, 4.37114e-06, 1.91069e-13, 0, 0, 0)
+transform = Transform3D(-4.37114e-06, -100, -4.37114e-06, 0, -4.37114e-06, 100, -100, 4.37114e-06, 1.91069e-13, 0, 0, -0.05)
 mesh = SubResource("ArrayMesh_su4f5")
 skeleton = NodePath("")
 
@@ -172,9 +187,14 @@ libraries = {
 }
 
 [node name="flash" type="MeshInstance3D" parent="."]
-transform = Transform3D(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.664078, -4.0925)
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0.664078, -4.0925)
 mesh = SubResource("PlaneMesh_22qkf")
 surface_material_override/0 = SubResource("StandardMaterial3D_vg75q")
 
 [node name="barrel" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.626265, -3.92657)
+
+[node name="shot" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("2_ndgmy")
+volume_db = -35.0
+pitch_scale = 2.87

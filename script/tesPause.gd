@@ -3,6 +3,8 @@ extends ColorRect
 @onready var animation = $AnimationPlayer
 @onready var exit = $CenterContainer/PanelContainer/MarginContainer/VBoxContainer/Quit
 @onready var restart = $CenterContainer/PanelContainer/MarginContainer/VBoxContainer/Restart
+
+@onready var sound = $"../click"
 const main_menu = preload("res://main_menu.tscn")
 var crosshair
 # Called when the node enters the scene tree for the first time.
@@ -31,15 +33,20 @@ func pause():
 
 
 func _on_quit_pressed():
+	sound.play()
 	unpause()
+	await get_tree().create_timer(0.09).timeout
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	get_tree().change_scene_to_packed(main_menu)
 	#get_tree().quit()
 
 func _on_restart_pressed():
+	sound.play()
 	unpause()
+	await get_tree().create_timer(0.09).timeout
 	get_tree().reload_current_scene()
 
 
 func _on_resume_pressed():
+	sound.play()
 	unpause()
