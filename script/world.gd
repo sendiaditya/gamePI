@@ -40,12 +40,13 @@ func _ready():
 	crosshairhit.position.y = get_viewport().size.y / 2 - 36 
 	
 	spawn_miniboss()
+	
+	spawner.wait_time = Global.get_keroco_spawn_time()
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
+
 func _process(_delta):
 	pass
-	#print(miniboss_defeated, "and", )
 
 
 func _on_player_player_hit():
@@ -72,18 +73,15 @@ func _on_enemy_hit():
 	await get_tree().create_timer(0.05).timeout
 	crosshairhit.visible = false
 
-
-
 func _on_miniboss_hit():
 	crosshairhit.visible = true
 	await get_tree().create_timer(0.05).timeout
 	crosshairhit.visible = false
 	
-#func _on_boss_hit():
-	#crosshairhit.visible = true
-	#await get_tree().create_timer(0.05).timeout
-	#crosshairhit.visible = false
-
+func _on_bos_boss_hit():
+	crosshairhit.visible = true
+	await get_tree().create_timer(0.05).timeout
+	crosshairhit.visible = false
 
 func died():
 	miniboss_defeated += 1
@@ -111,9 +109,3 @@ func spawn_miniboss():
 	miniboss_spawned = true
 
 
-
-
-func _on_bos_boss_hit():
-	crosshairhit.visible = true
-	await get_tree().create_timer(0.05).timeout
-	crosshairhit.visible = false

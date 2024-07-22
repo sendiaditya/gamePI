@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://cuq2hxj4u6pgn"]
 
 [ext_resource type="Shader" path="res://models/pause.gdshader" id="1_sp8ia"]
-[ext_resource type="Script" path="res://script/tesPause.gd" id="2_jvk72"]
+[ext_resource type="Script" path="res://script/Pause.gd" id="2_jvk72"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_stbbg"]
 shader = ExtResource("1_sp8ia")

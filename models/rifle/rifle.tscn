@@ -177,7 +177,7 @@ emission_texture = ExtResource("1_k2ty5")
 [node name="rifle" type="Node3D"]
 
 [node name="AssaultRifle" type="MeshInstance3D" parent="."]
-transform = Transform3D(-4.37114e-06, -100, -4.37114e-06, 0, -4.37114e-06, 100, -100, 4.37114e-06, 1.91069e-13, 0, 0, -0.05)
+transform = Transform3D(-4.37114e-06, -100, -4.37114e-06, 0, -4.37114e-06, 100, -100, 4.37114e-06, 1.91069e-13, 0, 0, 0)
 mesh = SubResource("ArrayMesh_su4f5")
 skeleton = NodePath("")
 
@@ -187,7 +187,7 @@ libraries = {
 }
 
 [node name="flash" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0.664078, -4.0925)
+transform = Transform3D(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.664078, -3.95273)
 mesh = SubResource("PlaneMesh_22qkf")
 surface_material_override/0 = SubResource("StandardMaterial3D_vg75q")
 

@@ -1,7 +1,7 @@
 [gd_scene load_steps=17 format=3 uid="uid://b0q7xn14h57y5"]
 
 [ext_resource type="Shader" path="res://models/pause.gdshader" id="1_pe7i4"]
-[ext_resource type="Script" path="res://script/tesPause.gd" id="2_hvsxt"]
+[ext_resource type="Script" path="res://script/Pause.gd" id="2_hvsxt"]
 [ext_resource type="Texture2D" uid="uid://or2f7fawhxod" path="res://assets/button/keyboard_shift.png" id="3_q66rm"]
 [ext_resource type="Texture2D" uid="uid://bn2231aix4feu" path="res://assets/button/keyboard_space.png" id="3_xxfik"]
 [ext_resource type="Texture2D" uid="uid://cwf4p0inekjxj" path="res://assets/button/keyboard_w.png" id="4_3iad2"]

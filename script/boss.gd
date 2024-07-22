@@ -5,9 +5,9 @@ var world = null
 var state_machine
 var health = 50
 
-const SPEED = 10
+var SPEED = 10
 const ATTACK_RANGE = 2.0
-const DAMAGE = 40
+var DAMAGE = 40
 
 var is_active = false
 
@@ -27,6 +27,11 @@ func _ready():
 	world = get_node(spawn_path)
 	state_machine = anim_tree.get("parameters/playback")
 	activation_area.connect("body_entered", Callable(self, "_on_activation_area_body_entered"))
+	
+	var settings = Global.get_settings_for("boss")
+	health = settings["health"]
+	DAMAGE = settings["damage"]
+	SPEED = settings["speed"]
 
 
 
@@ -79,7 +84,7 @@ func _on_area_3d_body_part_hit(dam):
 
 
 func _on_area_3d_body_entered(body):
-	if body.is_in_group("player"):  # Assuming the player is in the "player" group
+	if body.is_in_group("player"):
 		is_active = true
 		anim_tree.set_active(true)
 		world.changesong()

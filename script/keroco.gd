@@ -4,9 +4,9 @@ var player = null
 var state_machine
 var health = 6
 
-const SPEED = 4.0
+var SPEED = 4.0
 const ATTACK_RANGE = 2.0
-const DAMAGE = 20
+var DAMAGE = 20
 
 signal keroco_hit
 
@@ -21,6 +21,11 @@ signal keroco_hit
 func _ready():
 	player = get_node(player_path)
 	state_machine = anim_tree.get("parameters/playback")
+	
+	var settings = Global.get_settings_for("keroco")
+	health = settings["health"]
+	DAMAGE = settings["damage"]
+	SPEED = settings["speed"]
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):

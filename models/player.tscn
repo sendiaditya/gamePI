@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://dnkx1n11dih5g" path="res://models/rifle/rifle.tscn" id="3_ibutp"]
 [ext_resource type="Texture2D" uid="uid://oru4t2g4tfxq" path="res://models/rifle/keyboard_1.png" id="4_tokkq"]
 [ext_resource type="Texture2D" uid="uid://cshg80cdaskqf" path="res://models/rifle/keyboard_2.png" id="5_nnqwi"]
-[ext_resource type="Texture2D" uid="uid://c8w5phhikh0l0" path="res://models/rifle/M4a4_hud.png" id="6_vobar"]
+[ext_resource type="Texture2D" uid="uid://dqq585e6y5frj" path="res://models/rifle/rifle-removebg-preview.png" id="6_m1x1b"]
 [ext_resource type="Texture2D" uid="uid://cwin5v6be7pkk" path="res://models/rifle/pistol_black.png" id="7_6oroh"]
 [ext_resource type="PackedScene" uid="uid://b0q7xn14h57y5" path="res://models/tryPause.tscn" id="8_iyoww"]
 [ext_resource type="PackedScene" uid="uid://ynt7ww227o8n" path="res://models/death.tscn" id="9_cxgk3"]
@@ -141,9 +141,9 @@ anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -219.0
-offset_top = -159.0
+offset_top = -172.0
 offset_right = -155.0
-offset_bottom = -95.0
+offset_bottom = -108.0
 grow_horizontal = 0
 grow_vertical = 0
 scale = Vector2(0.7, 0.7)
@@ -173,13 +173,13 @@ anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -161.0
-offset_top = -159.0
+offset_top = -199.0
 offset_right = 839.0
-offset_bottom = 166.0
+offset_bottom = 393.0
 grow_horizontal = 0
 grow_vertical = 0
 scale = Vector2(0.15, 0.15)
-texture = ExtResource("6_vobar")
+texture = ExtResource("6_m1x1b")
 expand_mode = 1
 
 [node name="pistol" type="TextureRect" parent="head/Camera3D/Control"]
@@ -233,6 +233,7 @@ offset_bottom = 144.0
 text = "Defeat Miniboss"
 
 [node name="last" type="Label" parent="head/Camera3D/Control"]
+visible = false
 layout_mode = 0
 offset_left = 20.0
 offset_top = 148.0
@@ -249,6 +250,7 @@ offset_bottom = 144.0
 text = "0"
 
 [node name="done" type="Label" parent="head/Camera3D/Control"]
+visible = false
 layout_mode = 0
 offset_left = 191.0
 offset_top = 148.0

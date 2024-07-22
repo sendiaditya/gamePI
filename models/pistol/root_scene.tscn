@@ -42,7 +42,7 @@ _data = {
 [node name="Root Scene" instance=ExtResource("1_w17mp")]
 
 [node name="Pistol_5" parent="RootNode" index="0"]
-transform = Transform3D(-4.37114e-06, -88.8819, -4.37114e-06, 0, -3.88515e-06, 100, -100, 3.88515e-06, 1.91069e-13, 0, 0.01, 0.05)
+transform = Transform3D(-4.37114e-06, -88.8819, -4.37114e-06, 0, -3.88515e-06, 100, -100, 3.88515e-06, 1.91069e-13, 0, 0, 0)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="RootNode" index="1"]
 libraries = {

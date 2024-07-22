@@ -10,10 +10,14 @@ config_version=5
 
 [application]
 
-config/name="PIFinal"
+config/name="Gatekeeper's Gnaw "
 run/main_scene="res://main_menu.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
-config/icon="res://icon.svg"
+config/icon="res://logogamepng.png"
+
+[autoload]
+
+Global="*res://script/global.gd"
 
 [input]
 
